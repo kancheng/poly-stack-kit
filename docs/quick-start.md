@@ -19,6 +19,7 @@ Update each backend’s `.env` with DB credentials.
 - **Django**: set `DB_*` in `backend/django/django/.env` from `env.example`.
 - **Flask**: set `DATABASE_URL=mysql+pymysql://user:pass@127.0.0.1:3306/polystack`.
 - **Laravel**: set `DB_CONNECTION=mysql` and `DB_*` in `.env`.
+- If `database/seed.sql` is imported, demo login is available: `demo@polystack.local` / `password` (local development only).
 
 ## 2. Flask (`backend/flask/flask`)
 
@@ -28,10 +29,10 @@ python -m venv .venv
 .venv\Scripts\activate   # Windows
 pip install -r requirements.txt
 copy env.example .env
-python wsgi.py
+$env:PORT=8200; python wsgi.py   # PowerShell
 ```
 
-Default URL: `http://127.0.0.1:8080` (see `wsgi.py`). Tables are created on startup (`db.create_all()`).
+Default URL is `http://127.0.0.1:8080` if `PORT` is not set (see `wsgi.py`). Tables are created on startup (`db.create_all()`).
 
 ## 3. Django (`backend/django/django`)
 
@@ -72,3 +73,4 @@ Set `VITE_API_BASE_URL` to your running API (e.g. `http://127.0.0.1:8000`).
 
 - `scripts/copy-template.py` — copy a backend/frontend template to a new folder.
 - `scripts/init-project.sh` — POSIX helper to create venv and install deps (use Git Bash on Windows or adapt).
+- `scripts/test-matrix.py` — run 3x3 frontend/backend login smoke test (`/api/auth/login` + `/api/auth/me`).

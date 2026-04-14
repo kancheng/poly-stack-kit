@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -17,7 +18,7 @@ class AuthService
 
         $user = User::create([
             'email' => $email,
-            'password' => $password,
+            'password_hash' => $password,
             'name' => $name,
         ]);
 
@@ -35,12 +36,11 @@ class AuthService
     public function login(string $email, string $password): array
     {
         $email = strtolower($email);
-        $token = JWTAuth::attempt(['email' => $email, 'password' => $password]);
-        if (! $token) {
+        $user = User::where('email', $email)->first();
+        if (! $user || ! Hash::check($password, $user->password_hash)) {
             throw ValidationException::withMessages(['email' => ['Invalid credentials']]);
         }
-
-        $user = User::where('email', $email)->firstOrFail();
+        $token = JWTAuth::fromUser($user);
 
         return [
             'user' => $this->formatUser($user),

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import Any
 
+import bcrypt
 from flask_jwt_extended import create_access_token
 from werkzeug.security import check_password_hash, generate_password_hash
 
@@ -25,7 +26,7 @@ def register_user(email: str, password: str, name: str) -> tuple[dict[str, Any],
 
 def login_user(email: str, password: str) -> tuple[dict[str, Any], dict[str, Any]]:
     u = User.query.filter_by(email=email.lower()).first()
-    if not u or not check_password_hash(u.password_hash, password):
+    if not u or not _verify_password(u.password_hash, password):
         raise PermissionError("Invalid credentials")
     return _user_dict(u), _tokens(u)
 
@@ -47,3 +48,20 @@ def _user_dict(u: User) -> dict[str, Any]:
 def _tokens(u: User) -> dict[str, Any]:
     token = create_access_token(identity=str(u.id))
     return {"access_token": token, "token_type": "Bearer"}
+
+
+def _verify_password(stored_hash: str, password: str) -> bool:
+    # For users created by Flask itself.
+    try:
+        if check_password_hash(stored_hash, password):
+            return True
+    except ValueError:
+        # Non-werkzeug format (e.g. seed bcrypt hash) should fall through.
+        pass
+
+    # For MySQL seed hash used by Laravel-style bcrypt ($2y$...).
+    if stored_hash.startswith("$2y$") or stored_hash.startswith("$2b$"):
+        normalized = stored_hash.replace("$2y$", "$2b$", 1)
+        return bcrypt.checkpw(password.encode("utf-8"), normalized.encode("utf-8"))
+
+    return False

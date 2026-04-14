@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Support\Facades\Hash;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -17,11 +18,11 @@ class User extends Authenticatable implements JWTSubject
     protected $fillable = [
         'name',
         'email',
-        'password',
+        'password_hash',
     ];
 
     protected $hidden = [
-        'password',
+        'password_hash',
         'remember_token',
     ];
 
@@ -29,8 +30,17 @@ class User extends Authenticatable implements JWTSubject
     {
         return [
             'email_verified_at' => 'datetime',
-            'password' => 'hashed',
         ];
+    }
+
+    public function setPasswordHashAttribute(string $value): void
+    {
+        $this->attributes['password_hash'] = Hash::make($value);
+    }
+
+    public function getAuthPassword(): string
+    {
+        return $this->password_hash;
     }
 
     public function getJWTIdentifier(): mixed

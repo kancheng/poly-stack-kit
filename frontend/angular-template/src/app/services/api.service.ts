@@ -4,6 +4,9 @@ import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
+const TOKEN_KEY = 'polystack_token';
+const TOKEN_BASE_KEY = 'polystack_token_base';
+
 type Envelope<T> = {
   success: boolean;
   message: string;
@@ -14,7 +17,15 @@ type Envelope<T> = {
 @Injectable({ providedIn: 'root' })
 export class ApiService {
   private readonly http = inject(HttpClient);
-  private readonly base = `${environment.apiBase.replace(/\/$/, '')}/api`;
+  private readonly normalizedBase = environment.apiBase.replace(/\/$/, '');
+  private readonly base = `${this.normalizedBase}/api`;
+
+  constructor() {
+    if (localStorage.getItem(TOKEN_BASE_KEY) !== this.normalizedBase) {
+      localStorage.removeItem(TOKEN_KEY);
+      localStorage.setItem(TOKEN_BASE_KEY, this.normalizedBase);
+    }
+  }
 
   private unwrap<T>(): (source: Observable<Envelope<T>>) => Observable<T> {
     return map((res) => {

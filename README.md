@@ -23,6 +23,7 @@
 ## Quick start
 
 See `docs/quick-start.md`.
+For matrix validation details, see `docs/integration-matrix-validation.md`.
 
 ## Team Handover Checklist (Final)
 
@@ -74,7 +75,7 @@ python -m venv .venv
 .venv\Scripts\activate
 pip install -r requirements.txt
 copy env.example .env
-PORT=8200 python wsgi.py
+$env:PORT=8200; python wsgi.py
 ```
 
 - API Base URL: `http://127.0.0.1:8200`
@@ -132,6 +133,21 @@ npm start
 
 ## 常見問題
 
+- 測試登入帳號：若已匯入 `database/seed.sql`，可使用 `demo@polystack.local` / `password` 登入（僅供本機開發測試）。
 - `401 Unauthorized`：通常是前端 `Backend URL` 填錯，或尚未登入導致沒有 JWT token。
 - `CORS` 問題：確認後端允許目前前端啟動網址（host + port）。
+
+## 3 x 3 組合快速測試（登入 + auth/me）
+
+在三個後端都啟動後，可執行：
+
+```bash
+python scripts/test-matrix.py
+```
+
+可選參數（例如覆蓋 backend URL）：
+
+```bash
+python scripts/test-matrix.py --backend django=http://127.0.0.1:8000 --backend laravel=http://127.0.0.1:8100 --backend flask=http://127.0.0.1:8200
+```
 

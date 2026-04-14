@@ -1,0 +1,70 @@
+# Quick Start
+
+## Prerequisites
+
+- **Python 3.11+** (Django, Flask)
+- **PHP 8.2+**, **Composer** (Laravel)
+- **Node 20+** (frontends)
+- **MySQL 8** (optional; SQLite supported by Django/Flask dev defaults)
+
+## 1. Database (MySQL)
+
+```bash
+mysql -u root -p < database/schema.sql
+mysql -u root -p < database/seed.sql   # optional demo data
+```
+
+Update each backend’s `.env` with DB credentials.
+
+## 2. Flask (`backend/flask/flask_vue`)
+
+```bash
+cd backend/flask/flask_vue
+python -m venv .venv
+.venv\Scripts\activate   # Windows
+pip install -r requirements.txt
+copy env.example .env
+python wsgi.py
+```
+
+Default URL: `http://127.0.0.1:8080` (see `wsgi.py`). Tables are created on startup (`db.create_all()`).
+
+## 3. Django (`backend/django/django_vue`)
+
+```bash
+cd backend/django/django_vue
+python -m venv .venv
+.venv\Scripts\activate
+pip install -r requirements.txt
+copy env.example .env
+python manage.py migrate
+python manage.py runserver 8000
+```
+
+## 4. Laravel (`backend/laravel/laravel_vue`)
+
+```bash
+cd backend/laravel/laravel_vue
+composer install
+copy .env.example .env
+php artisan key:generate
+php artisan jwt:secret
+php artisan migrate
+php artisan serve
+```
+
+## 5. Frontends
+
+```bash
+cd frontend/vue-template
+npm install
+copy env.example .env
+npm run dev
+```
+
+Set `VITE_API_BASE_URL` to your running API (e.g. `http://127.0.0.1:8000`).
+
+## Scripts
+
+- `scripts/copy-template.py` — copy a backend/frontend template to a new folder.
+- `scripts/init-project.sh` — POSIX helper to create venv and install deps (use Git Bash on Windows or adapt).

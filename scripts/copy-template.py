@@ -2,7 +2,7 @@
 """
 Copy a PolyStack backend or frontend template to a new directory.
 Usage:
-  python copy-template.py backend flask_vue my_api
+  python copy-template.py backend flask my_api
   python copy-template.py frontend vue-template my-vue-app
 """
 from __future__ import annotations
@@ -18,7 +18,7 @@ ROOT = Path(__file__).resolve().parents[1]
 def main() -> int:
     p = argparse.ArgumentParser(description="Copy PolyStack template folder")
     p.add_argument("kind", choices=("backend", "frontend"))
-    p.add_argument("name", help="Template folder name, e.g. flask_vue or vue-template")
+    p.add_argument("name", help="Template folder name, e.g. flask or vue-template")
     p.add_argument("dest", help="Destination folder name (created under backend/ or frontend/)")
     args = p.parse_args()
 
@@ -44,14 +44,14 @@ def main() -> int:
 
 
 def _backend_subdir(template_name: str) -> str:
-    if template_name.startswith("django_"):
+    if template_name == "django":
         return "django"
-    if template_name.startswith("laravel_"):
+    if template_name == "laravel":
         return "laravel"
-    if template_name.startswith("flask_"):
+    if template_name == "flask":
         return "flask"
     raise SystemExit(
-        "Backend template name must start with django_, laravel_, or flask_"
+        "Backend template name must be one of: django, laravel, flask"
     )
 
 

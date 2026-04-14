@@ -5,7 +5,7 @@
 - **`api-spec/`** — Contract (`openapi.yaml`) shared by all stacks.
 - **`common/`** — Response envelope, errors, auth rules (normative for implementations).
 - **`database/`** — Reference SQL schema; each backend may mirror via migrations/ORM.
-- **`backend/{django,laravel,flask}/`** — Nine deployable API roots named by convention `{stack}_{frontend}`; **API behavior is identical**; names only indicate suggested pairing with `frontend/*-template`.
+- **`backend/{django,laravel,flask}/`** — Three deployable API roots (`django`, `laravel`, `flask`) that expose the same contract.
 - **`frontend/`** — Three SPA templates (Vue, React, Angular) consuming the same endpoints.
 
 ## Backend layering

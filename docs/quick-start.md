@@ -16,14 +16,14 @@ mysql -u root -p < database/seed.sql   # optional demo data
 
 Update each backend’s `.env` with DB credentials.
 
-- **Django**: set `DB_*` in `backend/django/*/.env` from `env.example`.
+- **Django**: set `DB_*` in `backend/django/django/.env` from `env.example`.
 - **Flask**: set `DATABASE_URL=mysql+pymysql://user:pass@127.0.0.1:3306/polystack`.
 - **Laravel**: set `DB_CONNECTION=mysql` and `DB_*` in `.env`.
 
-## 2. Flask (`backend/flask/flask_vue`)
+## 2. Flask (`backend/flask/flask`)
 
 ```bash
-cd backend/flask/flask_vue
+cd backend/flask/flask
 python -m venv .venv
 .venv\Scripts\activate   # Windows
 pip install -r requirements.txt
@@ -33,10 +33,10 @@ python wsgi.py
 
 Default URL: `http://127.0.0.1:8080` (see `wsgi.py`). Tables are created on startup (`db.create_all()`).
 
-## 3. Django (`backend/django/django_vue`)
+## 3. Django (`backend/django/django`)
 
 ```bash
-cd backend/django/django_vue
+cd backend/django/django
 python -m venv .venv
 .venv\Scripts\activate
 pip install -r requirements.txt
@@ -45,10 +45,10 @@ python manage.py migrate
 python manage.py runserver 8000
 ```
 
-## 4. Laravel (`backend/laravel/laravel_vue`)
+## 4. Laravel (`backend/laravel/laravel`)
 
 ```bash
-cd backend/laravel/laravel_vue
+cd backend/laravel/laravel
 composer install
 copy .env.example .env
 php artisan key:generate

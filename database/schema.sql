@@ -1,6 +1,11 @@
 -- PolyStack Kit — canonical relational schema (MySQL 8+ compatible)
 -- AI Prompt Task Hub: users, tasks, executions, ratings
 
+CREATE DATABASE IF NOT EXISTS `polystack`
+  CHARACTER SET utf8mb4
+  COLLATE utf8mb4_unicode_ci;
+USE `polystack`;
+
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 

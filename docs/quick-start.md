@@ -5,7 +5,7 @@
 - **Python 3.11+** (Django, Flask)
 - **PHP 8.2+**, **Composer** (Laravel)
 - **Node 20+** (frontends)
-- **MySQL 8** (optional; SQLite supported by Django/Flask dev defaults)
+- **MySQL 8** (required for all backend templates)
 
 ## 1. Database (MySQL)
 
@@ -15,6 +15,10 @@ mysql -u root -p < database/seed.sql   # optional demo data
 ```
 
 Update each backend’s `.env` with DB credentials.
+
+- **Django**: set `DB_*` in `backend/django/*/.env` from `env.example`.
+- **Flask**: set `DATABASE_URL=mysql+pymysql://user:pass@127.0.0.1:3306/polystack`.
+- **Laravel**: set `DB_CONNECTION=mysql` and `DB_*` in `.env`.
 
 ## 2. Flask (`backend/flask/flask_vue`)
 

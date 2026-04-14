@@ -3,6 +3,7 @@
 -- Hash below is bcrypt ($2y$) compatible with Laravel default; Django/Flask apps may need their own user or re-register.
 
 SET NAMES utf8mb4;
+USE `polystack`;
 
 INSERT INTO `users` (`id`, `email`, `password_hash`, `name`) VALUES
   (1, 'demo@polystack.local', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Demo User');
